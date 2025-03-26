@@ -63,6 +63,8 @@ const RadarChart = ({ radarData }) => {
         <ReactEcharts 
           option={option} 
           style={{ height: '100%', width: '100%' }} 
+          className="react-echarts-container"
+          opts={{ renderer: 'canvas' }}
         />
       </div>
       

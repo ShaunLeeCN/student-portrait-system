@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.service.ApiAccessLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,9 @@ public class SystemController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApiAccessLogService apiAccessLogService;
+    
     @GetMapping("/health")
     public Map<String, Object> checkHealth() {
         Map<String, Object> health = new HashMap<>();
@@ -90,6 +94,33 @@ public class SystemController {
                 tableCounts.put(table, count);
             }
             result.put("recordCounts", tableCounts);
+            
+        } catch (Exception e) {
+            result.put("error", e.getMessage());
+        }
+        
+        return result;
+    }
+
+    @GetMapping("/api-stats")
+    public Map<String, Object> getApiStatistics() {
+        Map<String, Object> result = new HashMap<>();
+        
+        try {
+            // 获取API访问统计信息
+            result.put("overview", apiAccessLogService.getApiAccessStatistics());
+            
+            // 按路径统计访问量
+            result.put("accessByPath", apiAccessLogService.getAccessCountByPath());
+            
+            // 按天统计访问量
+            result.put("accessByDay", apiAccessLogService.getAccessCountByDay());
+            
+            // 按小时统计访问量
+            result.put("accessByHour", apiAccessLogService.getAccessCountByHour());
+            
+            // 接口性能指标
+            result.put("performanceMetrics", apiAccessLogService.getApiPerformanceMetrics());
             
         } catch (Exception e) {
             result.put("error", e.getMessage());

@@ -1,97 +1,46 @@
 // src/pages/portrait/PortraitSearch.js
 import React, { useState } from 'react';
-import { Input, Button, Card, Typography, Row, Col, Table, message } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Input, Button, Card, Typography, Row, Col, message } from 'antd';
+import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 const { Search } = Input;
 
 const PortraitSearch = () => {
-  const [loading, setLoading] = useState(false);
-  const [students, setStudents] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  // 搜索学生
-  const handleSearch = async (value) => {
-    if (!value.trim()) {
-      message.warning('请输入学号或姓名');
+  // 处理学生画像搜索
+  const handleSearch = (studentNumber) => {
+    if (!studentNumber || studentNumber.trim() === '') {
+      message.warning('请输入有效的学号');
       return;
     }
 
-    try {
-      setLoading(true);
-      
-      // 调用搜索API
-      const response = await axios.get(`/api/students/search?keyword=${encodeURIComponent(value)}`);
-      
-      setStudents(response.data || []);
-      
-      if (response.data.length === 0) {
-        message.info('未找到相关学生');
-      }
-      
-    } catch (error) {
-      console.error('搜索学生失败:', error);
-      message.error('搜索学生失败');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    
+    // 直接导航到学生画像详情页
+    navigate(`/portrait/${studentNumber.trim()}`);
+    setLoading(false);
   };
-
-  // 查看学生画像
-  const handleViewPortrait = (studentNumber) => {
-    navigate(`/portrait/${studentNumber}`);
-  };
-
-  // 表格列定义
-  const columns = [
-    {
-      title: '学号',
-      dataIndex: 'studentNumber',
-      key: 'studentNumber',
-    },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '专业',
-      dataIndex: 'major',
-      key: 'major',
-    },
-    {
-      title: '年级',
-      dataIndex: 'grade',
-      key: 'grade',
-    },
-    {
-      title: '操作',
-      key: 'action',
-      render: (_, record) => (
-        <Button 
-          type="primary" 
-          onClick={() => handleViewPortrait(record.studentNumber)}
-        >
-          查看画像
-        </Button>
-      ),
-    },
-  ];
 
   return (
-    <div>
+    <div className="portrait-search-container">
       <Title level={2}>学生画像查询</Title>
       
-      <Card style={{ marginBottom: 24 }}>
-        <Row justify="center">
-          <Col xs={24} sm={16} md={12} lg={10} xl={8}>
+      <Card className="search-card">
+        <Row justify="center" gutter={[0, 24]}>
+          <Col xs={24} sm={20} md={16} lg={12}>
+            <Paragraph>
+              输入学生学号，查看该学生的学习画像分析、特征标签及个性化建议。
+            </Paragraph>
+            
             <Search
-              placeholder="请输入学号或姓名搜索"
-              enterButton={<><SearchOutlined /> 搜索</>}
+              placeholder="请输入学生学号"
+              enterButton={<Button type="primary" icon={<SearchOutlined />}>查询</Button>}
               size="large"
+              prefix={<UserOutlined />}
               loading={loading}
               onSearch={handleSearch}
             />
@@ -99,16 +48,27 @@ const PortraitSearch = () => {
         </Row>
       </Card>
       
-      {students.length > 0 && (
-        <Card title="搜索结果">
-          <Table
-            columns={columns}
-            dataSource={students}
-            rowKey="studentNumber"
-            loading={loading}
-          />
-        </Card>
-      )}
+      <Row justify="center" style={{ marginTop: 48 }}>
+        <Col xs={24} sm={20} md={16}>
+          <Card title="学生画像系统说明">
+            <Paragraph>
+              学生画像系统基于学生的学习数据，包括课程成绩、学习行为等多维度信息，
+              构建全面的学生个人画像。系统可以帮助教师了解学生的学习特点，为个性化
+              教学提供数据支持。
+            </Paragraph>
+            <Paragraph>
+              <strong>主要功能：</strong>
+              <ul>
+                <li>学生基本信息展示</li>
+                <li>学习成绩统计与趋势分析</li>
+                <li>个性化学习特征标签</li>
+                <li>能力多维度评估</li>
+                <li>学习建议与课程推荐</li>
+              </ul>
+            </Paragraph>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };

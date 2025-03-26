@@ -82,8 +82,17 @@ const MajorRankingChart = ({ data }) => {
       }
     ]
   };
-
-  return <ReactEcharts option={option} style={{ height: '500px' }} />;
+  return (
+    <div className="major-ranking-chart">
+      <ReactEcharts 
+        option={option} 
+        style={{ height: '500px', width: '100%' }} 
+        className="react-echarts-container"
+        opts={{ renderer: 'canvas' }}
+      />
+    </div>
+  );
+  //return <ReactEcharts option={option} style={{ height: '500px' }} />;
 };
 
 export default MajorRankingChart;

@@ -88,7 +88,16 @@ const ScoreCorrelationChart = () => {
 
   return (
     <Spin spinning={loading}>
-      {!loading && <ReactEcharts option={option} style={{ height: '500px' }} />}
+      {!loading && (
+        <div className="correlation-chart">
+          <ReactEcharts 
+            option={option} 
+            style={{ height: '500px', width: '100%' }} 
+            className="react-echarts-container"
+            opts={{ renderer: 'canvas' }}
+          />
+        </div>
+      )}
     </Spin>
   );
 };

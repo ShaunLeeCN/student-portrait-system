@@ -1,31 +1,71 @@
-import api from './index';
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:8080/api';
 
 // 获取成绩分布
-export const getScoreDistribution = () => {
-  return api.get('/analysis/score-distribution');
+export const getScoreDistribution = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/analysis/score-distribution`);
+    return response.data;
+  } catch (error) {
+    console.error('获取成绩分布数据失败:', error);
+    throw error;
+  }
 };
 
 // 获取专业排名
-export const getMajorRanking = () => {
-  return api.get('/analysis/major-ranking');
+export const getMajorRanking = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/analysis/major-ranking`);
+    return response.data;
+  } catch (error) {
+    console.error('获取专业排名数据失败:', error);
+    throw error;
+  }
 };
 
 // 获取学生成绩趋势
-export const getStudentScoreTrend = (studentNumber) => {
-  return api.get(`/analysis/score-trend/${studentNumber}`);
+export const getStudentScoreTrend = async (studentNumber) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/analysis/score-trend/${studentNumber}`);
+    return response.data;
+  } catch (error) {
+    console.error('获取学生成绩趋势数据失败:', error);
+    throw error;
+  }
 };
 
 // 获取学生与平均水平差距
-export const getStudentPerformanceGap = (studentNumber) => {
-  return api.get(`/analysis/performance-gap/${studentNumber}`);
+export const getStudentPerformanceGap = async (studentNumber) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/analysis/performance-gap/${studentNumber}`);
+    return response.data;
+  } catch (error) {
+    console.error('获取学生表现差距数据失败:', error);
+    throw error;
+  }
 };
 
 // 预测学生成绩
-export const predictStudentScore = (studentNumber, courseType = '必修') => {
-  return api.get(`/analysis/predict-score/${studentNumber}?courseType=${encodeURIComponent(courseType)}`);
+export const predictStudentScore = async (studentNumber, courseType = '必修') => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/analysis/predict-score/${studentNumber}?courseType=${encodeURIComponent(courseType)}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error('预测学生成绩失败:', error);
+    throw error;
+  }
 };
 
 // 获取学生能力雷达图数据
-export const getStudentRadarChart = (studentNumber) => {
-  return api.get(`/analysis/radar-chart/${studentNumber}`);
+export const getStudentRadarChart = async (studentNumber) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/analysis/radar-chart/${studentNumber}`);
+    return response.data;
+  } catch (error) {
+    console.error('获取学生能力雷达图数据失败:', error);
+    throw error;
+  }
 };

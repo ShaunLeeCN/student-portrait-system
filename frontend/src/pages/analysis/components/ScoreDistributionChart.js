@@ -55,8 +55,13 @@ const ScoreDistributionChart = ({ data }) => {
   };
 
   return (
-    <div>
-      <ReactEcharts option={option} style={{ height: '400px' }} />
+    <div className="score-distribution-chart">
+      <ReactEcharts 
+        option={option} 
+        style={{ height: '350px', width: '100%' }} 
+        className="react-echarts-container"
+        opts={{ renderer: 'canvas' }}
+      />
       {data.averageScore && (
         <div style={{ textAlign: 'center', marginTop: '10px' }}>
           平均分：<strong>{data.averageScore.toFixed(2)}</strong>，

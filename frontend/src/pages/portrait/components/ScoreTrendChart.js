@@ -96,10 +96,12 @@ const ScoreTrendChart = ({ trendData }) => {
   
   return (
     <Card title="成绩趋势" className="detail-container">
-      <div style={{ height: 350 }}>
+      <div className="score-trend-chart">
         <ReactEcharts 
           option={option} 
           style={{ height: '100%', width: '100%' }} 
+          className="react-echarts-container"
+          opts={{ renderer: 'canvas' }}
         />
       </div>
       

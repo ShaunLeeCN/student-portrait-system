@@ -111,10 +111,18 @@ const TrendAnalysisChart = () => {
 
   return (
     <Spin spinning={loading}>
-      {!loading && (data.semesters && data.semesters.length > 0) ? 
-        <ReactEcharts option={option} style={{ height: '400px' }} /> : 
+      {!loading && (data.semesters && data.semesters.length > 0) ? (
+        <div className="trend-analysis-chart">
+          <ReactEcharts 
+            option={option} 
+            style={{ height: '400px', width: '100%' }} 
+            className="react-echarts-container"
+            opts={{ renderer: 'canvas' }}
+          />
+        </div>
+      ) : (
         <Empty description="暂无学期成绩趋势数据" />
-      }
+      )}
     </Spin>
   );
 };

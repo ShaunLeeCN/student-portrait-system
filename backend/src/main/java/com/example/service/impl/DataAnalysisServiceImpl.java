@@ -102,7 +102,7 @@ public class DataAnalysisServiceImpl implements DataAnalysisService {
         // 使用SQL直接计算各专业平均成绩
         String sql = "SELECT s.major, AVG(c.score) as avg_score, " +
                 "COUNT(DISTINCT s.student_number) as student_count, " +
-                "COUNT(c.id) as course_count " +
+                "COUNT(DISTINCT c.course_name) as course_count " +
                 "FROM student s " +
                 "JOIN course_record c ON s.student_number = c.student_number " +
                 "GROUP BY s.major " +
